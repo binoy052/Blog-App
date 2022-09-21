@@ -20,7 +20,7 @@ const DB_HOST = process.env.DB_HOST;
 const DB_PASS = process.env.DB_PASS;
 
 mongoose.connect(
-  `mongodb+srv://${DB_HOST}:${DB_PASS}@cluster0.q4z5o.mongodb.net/?retryWrites=true&w=majority/blogDB`,
+  `mongodb+srv://${DB_HOST}:${DB_PASS}@cluster0.q4z5o.mongodb.net/test?retryWrites=true&w=majority`,
   { useNewUrlParser: true }
 );
 
@@ -44,17 +44,19 @@ app.get("/compose", function (req, res) {
   res.render("compose");
 });
 
-app.post("/compose", function (req, res) {
-  const post = new Post({
-    title: req.body.postTitle,
-    content: req.body.postBody,
-  });
+app.post("/compose", async function (req, res) {
+  try {
+    const post = new Post({
+      title: req.body.postTitle,
+      content: req.body.postBody,
+    });
 
-  post.save(function (err) {
-    if (!err) {
-      res.redirect("/");
-    }
-  });
+    await post.save();
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+    res.redirect("/");
+  }
 });
 
 app.get("/posts/:postId", function (req, res) {
