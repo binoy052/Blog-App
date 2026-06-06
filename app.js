@@ -16,11 +16,10 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const DB_HOST = process.env.DB_HOST;
-const DB_PASS = process.env.DB_PASS;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://gideon052:bKAJ_4VTxv-GjVf@ac-ors5rtl-shard-00-00.9zxd43y.mongodb.net:27017,ac-ors5rtl-shard-00-01.9zxd43y.mongodb.net:27017,ac-ors5rtl-shard-00-02.9zxd43y.mongodb.net:27017/blogDB?ssl=true&replicaSet=atlas-kebogh-shard-0&authSource=admin&appName=Cluster0";
 
 mongoose.connect(
-  `mongodb+srv://${DB_HOST}:${DB_PASS}@cluster0.q4z5o.mongodb.net/test?retryWrites=true&w=majority`,
+  MONGODB_URI,
   { useNewUrlParser: true }
 );
 
